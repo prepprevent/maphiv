@@ -3,6 +3,8 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import Fullscreen  # ✅ Thêm import này
+# ✅ Đặt layout rộng để mở rộng chiều ngang toàn trang
+st.set_page_config(layout="wide")
 
 # Load file Excel
 file_path = "Toa do - Copy.xlsx"
@@ -43,5 +45,5 @@ for _, row in filtered_df.iterrows():
     ).add_to(m)
 
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
-st.title("Bản đồ cơ sở cung cấp dịch vụ")
-st_folium(m, use_container_width=True, height=800)
+st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
+st_folium(m, use_container_width=True, height=1000)
