@@ -48,7 +48,7 @@ for _, row in filtered_df.iterrows():
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
 st_folium(m, use_container_width=True, height=800)
 
-st.subheader("📊 Thống kê số cơ sở duy nhất theo STT và dịch vụ (51, 61, 72)")
+st.subheader("📊 Thống kê số cơ sở duy nhất theo Mã vùng và dịch vụ (51, 61, 72)")
 
 # Danh sách STT cần quan tâm
 target_stts = [51, 61, 72]
@@ -63,15 +63,23 @@ unique_clinics = filtered_special_df.drop_duplicates(subset=['STT', 'Tên phòng
 rows = []
 for stt in target_stts:
     sub_df = unique_clinics[unique_clinics['STT'] == stt]
-    row_data = {'STT': stt}
-    total = 0
+    row_data = {'Mã vùng': stt}
+    
+    # Tổng là số cơ sở duy nhất (tên phòng khám)
+    total_unique = sub_df['Tên phòng khám'].nunique()
+    row_data['Tổng'] = total_unique
+
+    # Đếm từng dịch vụ
     for service in selected_services:
         count = sub_df[sub_df[service].notna()]['Tên phòng khám'].nunique()
         row_data[service] = count
-        total += count
-    row_data['Tổng'] = total
+
     rows.append(row_data)
 
-# Hiển thị bảng thống kê
-stats_df = pd.DataFrame(rows)
+# Sắp xếp cột: Mã vùng - Tổng - các dịch vụ
+cols_order = ['Mã vùng', 'Tổng'] + selected_services
+stats_df = pd.DataFrame(rows)[cols_order]
+
+# Hiển thị
 st.dataframe(stats_df)
+
