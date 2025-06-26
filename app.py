@@ -48,7 +48,7 @@ for _, row in filtered_df.iterrows():
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
 st_folium(m, use_container_width=True, height=800)
 
-st.subheader("📊 Thống kê số cơ sở duy nhất theo Mã vùng và dịch vụ (51, 61, 72)")
+st.subheader("📊 Thống kê số cơ sở duy nhất theo Mã vùng")
 
 # Danh sách STT cần quan tâm
 target_stts = [51, 61, 72]
