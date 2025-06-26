@@ -46,15 +46,30 @@ for _, row in filtered_df.iterrows():
 
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
+st.subheader("📊 Thống kê số cơ sở duy nhất theo STT và dịch vụ (51, 61, 72)")
 
-# 📊 Box thống kê
-st.subheader("📊 Thống kê số cơ sở theo dịch vụ được chọn")
-counts = {}
-for service in selected_services:
-    counts[service] = filtered_df[service].notna().sum()
-cols = st.columns(len(selected_services))
-for i, service in enumerate(selected_services):
-    cols[i].metric(label=service, value=counts[service])
+# Danh sách STT cần quan tâm
+target_stts = [51, 61, 72]
 
-# Hiển thị bản đồ
-st_folium(m, use_container_width=True, height=800)
+# Lọc các STT đặc biệt
+filtered_special_df = filtered_df[filtered_df['STT'].isin(target_stts)]
+
+# Loại bỏ trùng lặp theo STT + Tên phòng khám
+unique_clinics = filtered_special_df.drop_duplicates(subset=['STT', 'Tên phòng khám'])
+
+# Tạo thống kê
+rows = []
+for stt in target_stts:
+    sub_df = unique_clinics[unique_clinics['STT'] == stt]
+    row_data = {'STT': stt}
+    total = 0
+    for service in selected_services:
+        count = sub_df[sub_df[service].notna()]['Tên phòng khám'].nunique()
+        row_data[service] = count
+        total += count
+    row_data['Tổng'] = total
+    rows.append(row_data)
+
+# Hiển thị bảng thống kê
+stats_df = pd.DataFrame(rows)
+st.dataframe(stats_df)
