@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
+from folium.plugins import Fullscreen  # ✅ Thêm import này
 
 # Load file Excel
 file_path = "Toa do - Copy.xlsx"
@@ -15,8 +16,9 @@ selected_services = st.sidebar.multiselect("Chọn dịch vụ:", all_services, 
 # Lọc theo dịch vụ
 filtered_df = df[df[selected_services].notna().any(axis=1)]
 
-# Tạo bản đồ
+# Tạo bản đồ với fullscreen
 m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=11)
+Fullscreen(position='topright').add_to(m)  # ✅ Thêm nút fullscreen
 
 for _, row in filtered_df.iterrows():
     stt = row['STT']
@@ -40,5 +42,6 @@ for _, row in filtered_df.iterrows():
         icon=folium.Icon(color=color)
     ).add_to(m)
 
+# ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ")
-st_folium(m, width=1000, height=600)
+st_folium(m, use_container_width=True, height=800)
