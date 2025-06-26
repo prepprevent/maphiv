@@ -45,3 +45,27 @@ for _, row in filtered_df.iterrows():
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ")
 st_folium(m, use_container_width=True, height=800)
+
+# ... (tạo map và marker như cũ)
+
+from folium.plugins import Fullscreen
+Fullscreen(position='topright').add_to(m)
+
+# ✅ CSS mở rộng giao diện
+st.markdown("""
+    <style>
+        .main .block-container {
+            padding-top: 0rem;
+            padding-bottom: 0rem;
+        }
+        .st-emotion-cache-18ni7ap {
+            padding-top: 0rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# ✅ Hiển thị map rộng tối đa
+st.title("Bản đồ cơ sở cung cấp dịch vụ")
+st.markdown("📍 Sử dụng nút fullscreen góc phải bản đồ để mở to hơn.")
+st_folium(m, use_container_width=True, height=1000)
+
