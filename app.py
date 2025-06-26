@@ -24,28 +24,6 @@ filtered_df = df[df[selected_services].notna().any(axis=1)]
 m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=11)
 Fullscreen(position='topright').add_to(m)  # ✅ Thêm nút fullscreen
 
-# VẼ ĐƯỜNG VIỀN
-# ✅ Load dữ liệu ranh giới tỉnh thành Việt Nam (GeoJSON)
-with open("vietnam_provinces.geojson", encoding='utf-8') as f:
-    geojson_data = json.load(f)
-
-# ✅ Danh sách các tỉnh cần tô viền
-target_provinces = ['Hồ Chí Minh', 'Bình Dương', 'Bà Rịa - Vũng Tàu']
-
-# ✅ Vẽ ranh giới đậm của các tỉnh
-for feature in geojson_data['features']:
-    province_name = feature['properties'].get('NAME_1') or feature['properties'].get('name')
-    if province_name in target_provinces:
-        folium.GeoJson(
-            data=feature,
-            name=province_name,
-            style_function=lambda x: {
-                'fillOpacity': 0,
-                'color': 'black',
-                'weight': 4,
-            },
-            tooltip=province_name
-        ).add_to(m)
 for _, row in filtered_df.iterrows():
     stt = row['STT']
     if stt == 51:
@@ -69,7 +47,6 @@ for _, row in filtered_df.iterrows():
     ).add_to(m)
 
 
-# HẾT
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
 st_folium(m, use_container_width=True, height=800)
