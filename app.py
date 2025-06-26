@@ -46,6 +46,8 @@ for _, row in filtered_df.iterrows():
 
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
+st_folium(m, use_container_width=True, height=800)
+
 st.subheader("📊 Thống kê số cơ sở duy nhất theo STT và dịch vụ (51, 61, 72)")
 
 # Danh sách STT cần quan tâm
