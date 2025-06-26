@@ -46,4 +46,4 @@ for _, row in filtered_df.iterrows():
 
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
-st_folium(m, use_container_width=True, height=1000)
+st_folium(m, use_container_width=True, height=800)
