@@ -5,18 +5,6 @@ from streamlit_folium import st_folium
 from folium.plugins import Fullscreen  # ✅ Thêm import này
 # ✅ Đặt layout rộng để mở rộng chiều ngang toàn trang
 st.set_page_config(layout="wide")
-# Thống kê số lượng cơ sở theo từng dịch vụ
-st.subheader("📊 Thống kê số cơ sở theo dịch vụ được chọn")
-
-# Tạo bảng đếm
-counts = {}
-for service in selected_services:
-    counts[service] = filtered_df[service].notna().sum()
-
-# Hiển thị dưới dạng cột (columns)
-cols = st.columns(len(selected_services))
-for i, service in enumerate(selected_services):
-    cols[i].metric(label=service, value=counts[service])
 
 # Load file Excel
 file_path = "Toa do - Copy.xlsx"
@@ -58,4 +46,15 @@ for _, row in filtered_df.iterrows():
 
 # ✅ Tăng kích thước bản đồ hoặc dùng toàn bộ chiều ngang
 st.title("Bản đồ cơ sở cung cấp dịch vụ tại Hồ Chí Minh mới")
+
+# 📊 Box thống kê
+st.subheader("📊 Thống kê số cơ sở theo dịch vụ được chọn")
+counts = {}
+for service in selected_services:
+    counts[service] = filtered_df[service].notna().sum()
+cols = st.columns(len(selected_services))
+for i, service in enumerate(selected_services):
+    cols[i].metric(label=service, value=counts[service])
+
+# Hiển thị bản đồ
 st_folium(m, use_container_width=True, height=800)
